@@ -1,0 +1,64 @@
+version: '3'
+
+services:
+  haproxy:
+    image: eeacms/haproxy
+    ports:
+    - 8080:5000
+    - 1936:1936
+    depends_on:
+    - plone
+    environment:
+      BACKENDS: "plone"
+      BACKENDS_PORT: "8080"
+      DNS_ENABLED: "True"
+      TZ: "Europe/Berlin"
+    networks:
+      - backend
+
+  plone:
+    image: "${IMAGE}"
+    depends_on:
+      #- memcached
+      - zeoserver
+    environment:
+      ZEO_ADDRESS: zeoserver:8080
+      CORS_ALLOW_ORIGIN: "*"
+      CORS_ALLOW_METHODS: "GET"
+      #MEMCACHE_SERVER: "memcached:11211"
+      TZ: "Europe/Berlin"
+    #command: ['fg']
+    volumes:
+      - ./src/:/plone/instance/src/
+      - ./config/plone/site.cfg:/plone/instance/site.cfg
+    networks:
+      - backend
+
+  zeoserver:
+    image: "${IMAGE}"
+    container_name: zeoserver
+    command: zeo
+    volumes:
+      - ./data/:/data/
+    environment:
+      TZ: "Europe/Berlin"
+    networks:
+      - backend
+
+  memcached:
+    image: memcached:latest
+    command:
+    - "-m"
+    - "1024"
+    environment:
+      TZ: "Europe/Berlin"
+    networks:
+      - backend
+
+
+networks:
+  backend:
+    name: backend
+
+volumes:
+  data:
