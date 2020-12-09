@@ -1,12 +1,25 @@
+get-image-name = $(firstword $(subst IMAGE=, ,$1))
+image-name-split = $(firstword $(subst :, ,$1))
+
+DOCKERIMAGE_FILE=".env"
+IMAGE=$(call get-image-name,$(shell cat $(DOCKERIMAGE_FILE)), 1)
+NAME := $(call image-name-split,$(shell cat $(IMAGE)), 1)
+
 MAKEFLAGS += --no-print-directory
 
 .DEFAULT_GOAL := help
 
 SHELL := /bin/bash
 
-.PHONY: rebuild-plone
-build-plone:		## Run buildout -c buildout.cfg in container
-	docker-compose exec plone buildout -c buildout.cfg
+.PHONY: build-image
+build-image:		## Just (re)build docker image
+	@echo "Building new docker image: $(IMAGE)";
+	docker build . -t $(IMAGE);
+	@echo "Image built."
+
+.PHONY: buildout-plone
+buildout-plone:		## Run buildout -c buildout.cfg in container
+	docker-compose exec plone gosu plone buildout -c buildout.cfg
 
 .PHONY: start-plone
 start-plone:docker-compose.yml		## Start plone cluster
