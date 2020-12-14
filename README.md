@@ -26,7 +26,7 @@ Each developer that will work on the project needs to execute (after they clone 
 ### Developing for Plone image
 
 - `make build-image` First build a new image. Image's name is setted in .env files
-- `make start-plone` Start the Plone process. This create new container for HAProxy (port::1936), Zeoserver, Plone (Scaled in number of 4 ZEO clients), Memcached
+- `make start-plone` Start the Plone process. This create new container for HAProxy, Zeoserver, Plone (Scaled in number of 4 ZEO clients), Memcached
 
 The backend boostrap process creates the `src` folder where the Plone development packages are. Some useful commands are:
 
