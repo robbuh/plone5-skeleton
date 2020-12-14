@@ -13,7 +13,7 @@ provide a uniform developing experience. Stacks generated from this skeleton are
 
 ## Getting started on a new project
 
-- Clone this repo `git clone https://github.com/robbuh/plone5-skeleton-ws .`
+- Clone this repo `git clone https://github.com/robbuh/plone5-skeleton-ws`
 - You can now run `make help` to see the recipes that you have available.
 
 Each developer that will work on the project needs to execute (after they clone your development repo) one of the following bootstrap targets, according to their role:
