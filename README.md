@@ -1,14 +1,20 @@
 # Plone-based generic fullstack development skeleton
 
-A place to put common files used to develop Plone 5 + Volto based projects.
+A place to put common files used to develop Plone 5
 
 The idea is to have a central place of useful code and configuration that can
 provide a uniform developing experience. Stacks generated from this skeleton are not intended to be used in production, only for development. A production setup might be later provided as part of this skeleton.
 
+Based on:
+
+- https://github.com/eea/eea.docker.plone
+- https://github.com/eea/plone5-fullstack-skeleton/
+- https://github.com/datakurre/gatsby-starter-plone-brochure
+
 ## Getting started on a new project
 
 1. Clone this repo
-2. Clone https://github.com/eea/volto-starter-kit/ under folder "frontend"
+2. Clone https://github.com/robbuh/plone5-skeleton-ws under folder "frontend"
 3. Adjust image and package names in all files.
 
 
@@ -20,15 +26,13 @@ Each developer that will work on the project needs to execute (after they clone 
 - frontend, run `make setup-frontend-dev`
 - fullstack, run `make setup-fullstack-dev`. This executes both previous bootstraps and enables developing for both frontend and backend targets.
 
-### Developing for the backend
+### Developing for Plone image
 
-```
-docker build -t plonews:5.2.2-python37 .
-```
+- `make build-image` First build a new image. Image's name is setted in .env files
+- `make start-plone` Start the Plone process. This create new container for HAProxy (port::1936), Zeoserver, Plone (Scaled in number of 4 ZEO clients), Memcached
 
 The backend boostrap process creates the `src` folder where the Plone development packages are. Some useful commands are:
 
-- `make start-plone` to start the Plone process
 - `make plone-shell` to start a Plone docker container shell. This can be used to start the Plone instance manually, to debug code, or to rebuild the docker container buildout
 - `make release-backend` to release a new version of the Plone docker image.
 
@@ -43,7 +47,7 @@ cd -
 chown -R 1000 src
 ```
 
-The `backend/site.cfg` file is mapped as a docker volume. If you change this file, the plone container needs to be restarted:
+The `config/plone/site.cfg` file is mapped as a docker volume. If you change this file, the plone container needs to be restarted:
 
 ```
 make shell

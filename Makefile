@@ -17,23 +17,22 @@ build-image:		## Just (re)build docker image
 	docker build . -t $(IMAGE);
 	@echo "Image built."
 
-.PHONY: buildout-plone
-buildout-plone:		## Run buildout -c buildout.cfg in container
-	docker-compose exec plone gosu plone buildout -c buildout.cfg
-
 .PHONY: start-plone
 start-plone:docker-compose.yml		## Start plone cluster
-	docker-compose stop haproxy
-	docker-compose stop plone
+	docker-compose stop ## stop all services
 	docker-compose up -d
 	docker-compose scale plone=4
 
 .PHONY: start-plone-fg
 start-plone-fg:docker-compose.yml		## Start the plone process in foreground
-	docker-compose stop plone
+	docker-compose stop
 	docker-compose up -d
-	docker-compose exec plone gosu plone /docker-initialize.py || true
+	#docker-compose exec plone gosu plone /docker-initialize.py || true
 	docker-compose exec plone gosu plone bin/instance fg
+
+.PHONY: buildout-plone
+buildout-plone:		## Run buildout -c buildout.cfg in container
+	docker-compose exec plone buildout -c buildout.cfg
 
 .PHONY: plone_install
 plone_install:data
@@ -49,8 +48,6 @@ setup-plone-dev:plone_install 		## Setup needed for Plone developing
 
 .PHONY: plone-shell
 plone-shell:docker-compose.yml		## Start a shell on the plone service
-	docker-compose up -d
-	docker-compose exec plone gosu plone /docker-initialize.py || true
 	docker-compose exec plone bash
 
 .PHONY: stop
