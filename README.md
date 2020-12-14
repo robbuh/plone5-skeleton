@@ -13,10 +13,7 @@ provide a uniform developing experience. Stacks generated from this skeleton are
 
 ## Getting started on a new project
 
-1. Clone this repo
-2. Clone https://github.com/robbuh/plone5-skeleton-ws under folder "frontend"
-3. Adjust image and package names in all files.
-
+- Clone this repo `git clone https://github.com/robbuh/plone5-skeleton-ws .`
 
 You can now run `make help` to see the recipes that you have available.
 
