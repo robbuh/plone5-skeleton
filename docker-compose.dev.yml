@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  plone:
+    image: "${IMAGE}"
+    ports:
+    - "8080:8080"
+    environment:
+      CORS_ALLOW_ORIGIN: "*"
+      CORS_ALLOW_METHODS: "GET"
+      TZ: "Europe/Berlin"
+    command: ['fg']
+    volumes:
+      - ./data/:/data/
+      - ./src/:/plone/instance/src/
+      - ./config/plone/site.cfg:/plone/instance/site.cfg
+    networks:
+      - backend
+
+networks:
+  backend:
+    name: backend
+
+volumes:
+  data:

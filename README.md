@@ -16,19 +16,17 @@ provide a uniform developing experience. Stacks generated from this skeleton are
 - Clone this repo `git clone https://github.com/robbuh/plone5-skeleton-ws`
 - You can now run `make help` to see the available recipes.
 
-Each developer that will work on the project needs to execute (after they clone your development repo) one of the following bootstrap targets, according to their role:
-
-- backend, run `make setup-plone-dev`
-- frontend, run `make setup-frontend-dev`
-- fullstack, run `make setup-fullstack-dev`. This executes both previous bootstraps and enables developing for both frontend and backend targets.
-
-### Developing for Plone image
-
 - `make build-image` First build a new image. Image name is setted in `.env` file
 - `make start-plone` Create new container for HAProxy, Zeoserver, Plone (Scaled in number of 4 ZEO clients), Memcached and start the Plone process.
 
-The backend boostrap process creates the `src` folder where the Plone development packages are. Some useful commands are:
 
+### Developing for Plone image
+
+After created or downloaded the custom image (ref. "Getting started on a new project" paragraph) it's possible start to develop products and Plone image
+
+The boostrap process creates the `src` folder where the Plone development packages are. Some useful commands are:
+
+- `make setup-plone-dev` First setup a Plone develop environment. Just one plone container will be created. You can access to `@@reload` page to reload you custom product and you can access to many other development functionalities.
 - `make plone-shell` to start a Plone docker container shell. This can be used to start the Plone instance manually, to debug code, or to rebuild the docker container buildout
 - `make release-backend` to release a new version of the Plone docker image.
 
@@ -44,6 +42,15 @@ chown -R 1000 src
 ```
 
 The `config/plone/site.cfg` file is mapped as a docker volume. If you change this file, the plone container needs to be restarted:
+
+After customized your products and edited your buildout rebuild docker image and test if everything is working in production
+
+```
+make build-image
+make start-plone
+```
+
+
 
 ```
 make shell

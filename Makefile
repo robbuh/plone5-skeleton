@@ -5,6 +5,8 @@ DOCKERIMAGE_FILE=".env"
 IMAGE=$(call get-image-name,$(shell cat $(DOCKERIMAGE_FILE)), 1)
 NAME := $(call image-name-split,$(shell cat $(IMAGE)), 1)
 
+DOCKERCOMPOSE_DEV=docker-compose.dev.yml
+
 MAKEFLAGS += --no-print-directory
 
 .DEFAULT_GOAL := help
@@ -17,34 +19,42 @@ build-image:		## Just (re)build docker image
 	docker build . -t $(IMAGE);
 	@echo "Image built."
 
-.PHONY: start-plone
+.PHONY: stop start-plone
 start-plone:docker-compose.yml		## Start plone cluster
-	docker-compose stop ## stop all services
 	docker-compose up -d
 	docker-compose scale plone=4
 
-.PHONY: start-plone-fg
-start-plone-fg:docker-compose.yml		## Start the plone process in foreground
-	docker-compose stop
-	docker-compose up -d
-	#docker-compose exec plone gosu plone /docker-initialize.py || true
-	docker-compose exec plone gosu plone bin/instance fg
-
-.PHONY: buildout-plone
+.PHONY: buildout-plone fix-permissions
 buildout-plone:		## Run buildout -c buildout.cfg in container
 	docker-compose exec plone buildout -c buildout.cfg
 
 .PHONY: plone_install
-plone_install:data
-	mkdir -p src
+plone_install:
 	sudo chown -R 500 src
-	docker-compose up -d
-	docker-compose exec plone gosu plone bin/develop rb
 	docker-compose exec plone gosu plone /docker-initialize.py
+	docker-compose exec plone buildout -c develop.cfg
+	#docker-compose exec plone gosu plone bin/develop rb
 	sudo chown -R `whoami` src/
 
+.PHONY: fix-permissions
+fix-permissions:
+	docker-compose exec plone find /data  -not -user plone -exec chown plone:plone {} \+
+	docker-compose exec plone find /plone -not -user plone -exec chown plone:plone {} \+
+
+.PHONY: plone-fg
+plone-fg:docker-compose.yml		## Start the plone process in foreground
+	docker-compose exec plone gosu plone bin/instance fg
+
+.PHONY: start-plone-dev
+start-plone-dev:
+	docker-compose -f $(DOCKERCOMPOSE_DEV) up -d
+
+.PHONY: restart-plone-dev
+restart-plone-dev:
+	docker-compose -f $(DOCKERCOMPOSE_DEV) restart
+
 .PHONY: setup-plone-dev
-setup-plone-dev:plone_install 		## Setup needed for Plone developing
+setup-plone-dev:stop start-plone-dev plone_install fix-permissions restart-plone-dev  		## Setup needed for Plone developing
 
 .PHONY: plone-shell
 plone-shell:docker-compose.yml		## Start a shell on the plone service
