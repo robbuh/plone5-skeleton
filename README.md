@@ -20,13 +20,13 @@ provide a uniform developing experience. Stacks generated from this skeleton are
 
 ### Developing for Plone image
 
-After created or downloaded the custom image (ref. "Getting started on a new project" paragraph) it's possible start to develop products and Plone image
-
-The boostrap process creates the `src` folder where the Plone development packages are. Some useful commands are:
+After created or downloaded the custom image (ref. "Getting started on a new project" paragraph) start develop products and Plone image:
 
 - `make setup-plone-dev` First setup a Plone develop environment. Just one plone container will be created. You can access to `@@reload` page to reload you custom product and you can access to many other development functionalities.
 - `make plone-shell` to start a Plone docker container shell. This can be used to start the Plone instance manually, to debug code, or to rebuild the docker container buildout
 - `make release-backend` to release a new version of the Plone docker image.
+
+The boostrap process creates the `src` folder where the Plone development packages are.
 
 To create a new addon, you can run something like this: (please adjust according to intended package name and your user uid on the host machine - 1000 is usually the default on desktop Linux distributions, but there's no standard).
 
