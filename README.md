@@ -15,10 +15,8 @@ provide a uniform developing experience. Stacks generated from this skeleton are
 
 - Clone this repo `git clone https://github.com/robbuh/plone5-skeleton-ws`
 - You can now run `make help` to see the available recipes.
-
 - `make build-image` First build a new image. Image name is setted in `.env` file
 - `make start-plone` Create new container for HAProxy, Zeoserver, Plone (Scaled in number of 4 ZEO clients), Memcached and start the Plone process.
-
 
 ### Developing for Plone image
 
