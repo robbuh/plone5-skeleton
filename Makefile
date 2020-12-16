@@ -30,11 +30,11 @@ buildout-plone:		## Run buildout -c buildout.cfg in container
 
 .PHONY: plone_install
 plone_install:
-	sudo chown -R 500 src
+	#sudo chown -R 1000 src
+	#sudo chown -R `whoami` src/
 	docker-compose exec plone gosu plone /docker-initialize.py
 	docker-compose exec plone buildout -c develop.cfg
 	#docker-compose exec plone gosu plone bin/develop rb
-	sudo chown -R `whoami` src/
 
 .PHONY: fix-permissions
 fix-permissions:
@@ -58,7 +58,7 @@ setup-plone-dev:stop start-plone-dev plone_install fix-permissions restart-plone
 
 .PHONY: plone-shell
 plone-shell:docker-compose.yml		## Start a shell on the plone service
-	docker-compose exec plone bash
+	docker-compose exec plone gosu plone bash
 
 .PHONY: stop
 stop:		## Stop all services

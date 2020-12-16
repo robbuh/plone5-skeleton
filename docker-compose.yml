@@ -27,9 +27,6 @@ services:
       CORS_ALLOW_METHODS: "GET"
       #MEMCACHE_SERVER: "memcached:11211"
       TZ: "Europe/Berlin"
-    volumes:
-      - ./src/:/plone/instance/src/
-      - ./config/plone/site.cfg:/plone/instance/site.cfg
     networks:
       - backend
 

@@ -3,6 +3,7 @@ version: '3'
 services:
   plone:
     image: "${IMAGE}"
+    container_name: plone
     ports:
     - "8080:8080"
     environment:
@@ -14,6 +15,7 @@ services:
       - ./data/:/data/
       - ./src/:/plone/instance/src/
       - ./config/plone/site.cfg:/plone/instance/site.cfg
+      - ./config/plone/sources.cfg:/plone/instance/sources.cfg
     networks:
       - backend
 

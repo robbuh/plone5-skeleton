@@ -21,6 +21,7 @@ buildDeps="
   libz-dev
   zlib1g-dev
   subversion
+  mercurial
 "
 
 runDeps="
@@ -41,6 +42,7 @@ runDeps="
   lynx
   poppler-utils
   subversion
+  mercurial
   tex-gyre
   vim
   wv
