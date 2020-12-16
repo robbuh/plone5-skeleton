@@ -19,8 +19,8 @@ build-image:		## Just (re)build docker image
 	docker build . -t $(IMAGE);
 	@echo "Image built."
 
-.PHONY: stop start-plone
-start-plone:docker-compose.yml		## Start Plone cluster
+.PHONY: start-plone
+start-plone: stop start-plone		## Start Plone cluster
 	docker-compose up -d
 	docker-compose scale plone=4
 
