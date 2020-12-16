@@ -53,8 +53,8 @@ start-plone-dev:
 restart-plone-dev:
 	docker-compose -f $(DOCKERCOMPOSE_DEV) restart
 
-.PHONY: setup-plone-dev
-setup-plone-dev:stop start-plone-dev plone_install fix-permissions restart-plone-dev  		## Setup needed for Plone developing
+.PHONY: plone-dev
+plone-dev:stop start-plone-dev plone_install fix-permissions restart-plone-dev  		## Setup needed for Plone developing
 
 .PHONY: plone-shell
 plone-shell:docker-compose.yml		## Start a shell on the plone service
