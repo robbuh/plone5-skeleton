@@ -3,7 +3,7 @@ image-name-split = $(firstword $(subst :, ,$1))
 
 DOCKERIMAGE_FILE = ".env"
 IMAGE = $(call get-image-name,$(shell cat $(DOCKERIMAGE_FILE)), 1)
-NAME = $(call image-name-split,$(shell cat $(IMAGE)), 1)
+NAME = $(call image-name-split,$(IMAGE), 1)
 
 DOCKERCOMPOSE_DEV = docker-compose.dev.yml
 
@@ -18,6 +18,12 @@ build-image:		## Just (re)build docker image
 	@echo "Building new docker image: $(IMAGE)";
 	docker build . -t $(IMAGE);
 	@echo "Image built."
+
+.PHONY: push
+push:		## Push image in repo. Image name must be changed in .env file
+	docker push $(IMAGE)
+	docker tag $(IMAGE) $(NAME):latest
+	docker push $(NAME):latest
 
 .PHONY: start-plone
 start-plone: stop start-plone		## Start Plone cluster

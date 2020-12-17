@@ -22,9 +22,9 @@ provide a uniform developing experience. Stacks generated from this skeleton are
 
 After created or downloaded the custom image (ref. "Getting started on a new project" paragraph) start develop products and Plone image:
 
-- `make setup-plone-dev` First setup a Plone develop environment. Just one plone container will be created. You can access to `@@reload` page to reload you custom product and you can access to many other development functionalities.
+- `make plone-dev` to setup a Plone develop environment. Just one plone container will be created. You can access to `@@reload` page to reload you custom product and you can access to many other development functionalities.
 - `make plone-shell` to start a Plone docker container shell. This can be used to start the Plone instance manually, to debug code, or to rebuild the docker container buildout
-- `make release-backend` to release a new version of the Plone docker image.
+- `make push` to release a new version of Plone docker image. Image name and tag is setted in `.env` file. A `latest` image will be also created
 
 The boostrap process creates the `src` folder where the Plone development packages are.
 
@@ -49,12 +49,7 @@ make start-plone
 ```
 
 
-
-```
-make shell
-docker-compose restart plone
-```
-If you brind new development packages, you need to fix permissions in the `src/` folder, by running (in bash):
+If you bring new development packages, you need to fix permissions in the `src/` folder, by running (in bash):
 ```
 sudo chown -R `whoami` src/
 ```
@@ -63,12 +58,4 @@ If you use fish as a shell, run:
 
 ```
 sudo chown -R (whoami) src/
-```
-
-## Keep your project updated to the common skeleton
-
-To keep up to date with it run:
-
-```
-make sync-makefiles
 ```
