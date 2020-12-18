@@ -42,7 +42,7 @@ buildout:
 plone-buildout:	stop plone-start buildout fix-permissions restart	## Run buildout and start Plone cluster
 
 .PHONY: plone_install
-plone_install:
+plone_install: 
 	#sudo chown -R 1000 src
 	#sudo chown -R `whoami` src/
 	docker-compose exec plone gosu plone /docker-initialize.py
@@ -55,7 +55,7 @@ fix-permissions:
 	docker-compose exec plone find /plone -not -user plone -exec chown plone:plone {} \+
 
 .PHONY: plone-fg
-plone-fg:docker-compose.yml		## Start Plone process in foreground mode
+plone-fg:		## Start Plone process in foreground mode
 	docker-compose exec plone gosu plone bin/instance fg
 
 .PHONY: plone-start-dev
@@ -70,8 +70,12 @@ replone-start-dev:
 plone-dev:stop plone-start-dev plone_install fix-permissions replone-start-dev  		## Setup needed for Plone develop
 
 .PHONY: plone-shell
-plone-shell:docker-compose.yml		## Start a shell on Plone service
+plone-shell:		## Start a shell on Plone service as plone user
 	docker-compose exec plone gosu plone bash
+
+.PHONY: sudo-shell
+sudo-shell:	## Start a shell on Plone service as sudo
+	docker-compose exec plone bash
 
 .PHONY: stop
 stop:		## Stop all services
