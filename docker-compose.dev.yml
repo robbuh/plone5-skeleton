@@ -9,7 +9,7 @@ services:
     environment:
       CORS_ALLOW_ORIGIN: "*"
       CORS_ALLOW_METHODS: "GET"
-      TZ: "Europe/Berlin"
+      TZ: "${TIMEZONE}"
     command: ['fg']
     volumes:
       - ./data/:/data/

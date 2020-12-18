@@ -13,29 +13,33 @@ MAKEFLAGS += --no-print-directory
 
 SHELL := /bin/bash
 
-.PHONY: build-image
-build-image:		## Just (re)build docker image
+.PHONY: build
+build:		## Just (re)build docker image
 	@echo "Building new docker image: $(IMAGE)";
 	docker build . -t $(IMAGE);
 	@echo "Image built."
 
 .PHONY: push
-push:		## Push image in repo. Image name must be changed in .env file
+push:		## Push image in repo. Image name is in .env file
 	docker push $(IMAGE)
 	docker tag $(IMAGE) $(NAME):latest
 	docker push $(NAME):latest
 
-.PHONY: start-plone
-start-plone: stop start-plone		## Start Plone cluster
+.PHONY: pull
+pull:		## Pull image from repo. Image name is in .env file
+	docker pull $(IMAGE)
+
+.PHONY: plone-start
+plone-start: stop plone-start		## Start Plone cluster
 	docker-compose up -d
 	docker-compose scale plone=4
 
-.PHONY: buildout-plone
-buildout-plone:
+.PHONY: buildout
+buildout:
 	docker-compose exec plone buildout -c buildout.cfg
 
-.PHONY: run-buildout
-run-buildout:	stop start-plone buildout-plone fix-permissions restart	## Run buildout and start Plone cluster
+.PHONY: plone-buildout
+plone-buildout:	stop plone-start buildout fix-permissions restart	## Run buildout and start Plone cluster
 
 .PHONY: plone_install
 plone_install:
@@ -54,16 +58,16 @@ fix-permissions:
 plone-fg:docker-compose.yml		## Start Plone process in foreground mode
 	docker-compose exec plone gosu plone bin/instance fg
 
-.PHONY: start-plone-dev
-start-plone-dev:
+.PHONY: plone-start-dev
+plone-start-dev:
 	docker-compose -f $(DOCKERCOMPOSE_DEV) up -d
 
-.PHONY: restart-plone-dev
-restart-plone-dev:
+.PHONY: replone-start-dev
+replone-start-dev:
 	docker-compose -f $(DOCKERCOMPOSE_DEV) restart
 
 .PHONY: plone-dev
-plone-dev:stop start-plone-dev plone_install fix-permissions restart-plone-dev  		## Setup needed for Plone develop
+plone-dev:stop plone-start-dev plone_install fix-permissions replone-start-dev  		## Setup needed for Plone develop
 
 .PHONY: plone-shell
 plone-shell:docker-compose.yml		## Start a shell on Plone service
