@@ -1,0 +1,29 @@
+version: '2'
+
+services:
+  plone:
+    image: robbuh/plonews:5.2.2-python37-0.1
+    ports:
+    - "8080"
+    links:
+    - zeoserver
+    depends_on:
+    - zeoserver
+    environment:
+      ZEO_ADDRESS: zeoserver:8080
+      CORS_ALLOW_ORIGIN: "*"
+      CORS_ALLOW_METHODS: "GET"
+      TZ: Europe/Berlin
+
+  zeoserver:
+    image: robbuh/plonews:5.2.2-python37-0.1
+    container_name: zeoserver
+    command: zeo
+    volumes:
+      - ./data/:/data/
+    environment:
+      TZ: Europe/Berlin
+
+
+volumes:
+    data:
