@@ -68,12 +68,12 @@ plone-fg:		## Start Plone process in foreground mode
 plone-start-dev:
 	docker-compose -f $(DOCKERCOMPOSE_DEV) up -d
 
-.PHONY: replone-start-dev
-replone-start-dev:
+.PHONY: plone-restart-dev
+plone-restart-dev:
 	docker-compose -f $(DOCKERCOMPOSE_DEV) restart
 
 .PHONY: plone-dev
-plone-dev:stop plone-start-dev plone_install fix-permissions replone-start-dev  		## Setup needed for Plone develop
+plone-dev:stop plone-start-dev plone_install fix-permissions plone-restart-dev  		## Setup needed for Plone develop
 
 .PHONY: plone-shell
 plone-shell:		## Start a shell on Plone service as plone user
