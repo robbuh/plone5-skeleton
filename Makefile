@@ -19,6 +19,12 @@ build:		## Just (re)build docker image
 	docker build . -t $(IMAGE);
 	@echo "Image built."
 
+.PHONY: build-no-cache
+build-no-cache:		## Just (re)build docker image with --no-cache option
+	@echo "Building new docker image: $(IMAGE) ";
+	docker build --no-cache . -t $(IMAGE);
+	@echo "Image built."
+
 .PHONY: push
 push:		## Push image in repo. Image name is in .env file
 	docker push $(IMAGE)
