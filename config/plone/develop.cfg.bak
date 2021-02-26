@@ -2,13 +2,6 @@
 extends =
   plone-develop.cfg
 
-sources = sources
-auto-checkout = *
-always-checkout = force
-allow-picked-versions = true
-show-picked-versions = true
-update-versions-file = versions.cfg
-
 parts +=
   test
   nosetest
@@ -16,7 +9,7 @@ parts +=
   coverage
   report
 
-[configuration]
+[instance]
 eggs +=
   Products.ZMIntrospection
   ipdb
@@ -30,21 +23,21 @@ eggs +=
 recipe = collective.xmltestreport
 defaults = ['--auto-color', '--auto-progress', '--ignore_dir=.git', '--ignore_dir=bower_components', '--ignore_dir=node_modules']
 eggs =
-  ${configuration:eggs}
-  ${configuration:test-packages}
+  ${instance:eggs}
+  ${instance:test-packages}
 
 [nosetest]
 recipe = pbp.recipe.noserunner
 eggs =
   pbp.recipe.noserunner
-  ${configuration:eggs}
-  ${configuration:test-packages}
+  ${instance:eggs}
+  ${instance:test-packages}
 working-directory = ${buildout:directory}
 
 [xmltestreport]
 recipe = collective.xmltestreport
 eggs =
-  ${configuration:eggs}
+  ${instance:eggs}
 defaults = ['--exit-with-status', '--xml']
 
 [coverage]
