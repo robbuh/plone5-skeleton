@@ -48,7 +48,7 @@ buildout:
 plone-buildout:	stop plone-start buildout fix-permissions restart	## Run buildout and start Plone cluster
 
 .PHONY: plone_install
-plone_install: 
+plone_install:
 	#sudo chown -R 1000 src
 	#sudo chown -R `whoami` src/
 	docker-compose exec plone gosu plone /docker-initialize.py
